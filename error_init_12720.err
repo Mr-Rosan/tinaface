@@ -1,0 +1,42 @@
+multiprocessing.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/home/msai/jwang098/anaconda3/envs/tf/lib/python3.8/multiprocessing/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/home/msai/jwang098/anaconda3/envs/tf/lib/python3.8/multiprocessing/pool.py", line 51, in starmapstar
+    return list(itertools.starmap(args[0], args[1]))
+  File "/home/msai/jwang098/tinaface/vedadet/misc/evaluation/mean_ap.py", line 175, in tpfp_default
+    (np.zeros(gt_bboxes.shape[0], dtype=np.bool),
+  File "/home/msai/jwang098/anaconda3/envs/tf/lib/python3.8/site-packages/numpy/__init__.py", line 305, in __getattr__
+    raise AttributeError(__former_attrs__[attr])
+AttributeError: module 'numpy' has no attribute 'bool'.
+`np.bool` was a deprecated alias for the builtin `bool`. To avoid this error in existing code, use `bool` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.bool_` here.
+The aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original release note at:
+    https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "configs/trainval/tinaface/test_widerface.py", line 101, in <module>
+    main()
+  File "configs/trainval/tinaface/test_widerface.py", line 98, in main
+    data_loader.dataset.evaluate(results, 'mAP')
+  File "/home/msai/jwang098/tinaface/vedadet/datasets/custom.py", line 391, in evaluate
+    mean_ap, _ = eval_map(
+  File "/home/msai/jwang098/tinaface/vedadet/misc/evaluation/mean_ap.py", line 325, in eval_map
+    tpfp = pool.starmap(
+  File "/home/msai/jwang098/anaconda3/envs/tf/lib/python3.8/multiprocessing/pool.py", line 372, in starmap
+    return self._map_async(func, iterable, starmapstar, chunksize).get()
+  File "/home/msai/jwang098/anaconda3/envs/tf/lib/python3.8/multiprocessing/pool.py", line 771, in get
+    raise self._value
+AttributeError: module 'numpy' has no attribute 'bool'.
+`np.bool` was a deprecated alias for the builtin `bool`. To avoid this error in existing code, use `bool` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.bool_` here.
+The aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original release note at:
+    https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
+/home/msai/jwang098/tinaface/vedadet/misc/evaluation/mean_ap.py:175: FutureWarning: In the future `np.bool` will be defined as the corresponding NumPy scalar.
+  (np.zeros(gt_bboxes.shape[0], dtype=np.bool),
+/home/msai/jwang098/tinaface/vedadet/misc/evaluation/mean_ap.py:175: FutureWarning: In the future `np.bool` will be defined as the corresponding NumPy scalar.
+  (np.zeros(gt_bboxes.shape[0], dtype=np.bool),
+/home/msai/jwang098/tinaface/vedadet/misc/evaluation/mean_ap.py:175: FutureWarning: In the future `np.bool` will be defined as the corresponding NumPy scalar.
+  (np.zeros(gt_bboxes.shape[0], dtype=np.bool),

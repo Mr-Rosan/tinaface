@@ -62,12 +62,34 @@
 
 #include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
-#include <THC/THCAtomics.cuh>
+//#include <THC/THCAtomics.cuh>
+#include <ATen/cuda/ThrustAllocator.h>
 #include <stdio.h>
 #include <math.h>
 #include <float.h>
 
 using namespace at;
+
+#ifdef __CUDA_ARCH__
+// adapted from https://github.com/torch/cutorch/blob/master/lib/THC/THCAtomics.cuh
+__device__ __forceinline__ void atomicAdd(c10::Half* address, c10::Half val) {
+    unsigned int *address_as_ui = reinterpret_cast<unsigned int *>(reinterpret_cast<char *>(address) - (reinterpret_cast<size_t>(address) & 2));
+    unsigned int old = *address_as_ui;
+    unsigned int assumed;
+
+    do {
+        assumed = old;
+        unsigned short hsum = reinterpret_cast<size_t>(address) & 2 ? (old >> 16) : (old & 0xffff);
+        hsum += val;
+        old = reinterpret_cast<size_t>(address) & 2
+                 ? (old & 0xffff) | (hsum << 16)
+                 : (old & 0xffff0000) | hsum;
+        old = atomicCAS(address_as_ui, assumed, old);
+
+    // Note: uses integer comparison to avoid hang in case of NaN (since NaN != NaN)
+    } while (assumed != old);
+}
+#endif
 
 #define CUDA_KERNEL_LOOP(i, n)                                 \
   for (int i = blockIdx.x * blockDim.x + threadIdx.x; i < (n); \
