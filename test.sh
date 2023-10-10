@@ -9,4 +9,4 @@
 #SBATCH --error=error_%x_%j.err
 
 module load cuda/11.8
-python configs/trainval/tinaface/test_widerface.py configs/trainval/tinaface/tinaface_r50_fpn_gn_dcn.py /home/msai/jwang098/tinaface/workdir/tinaface_r50_fpn_bn/tinaface_r50_fpn_bn.pth
+python configs/trainval/tinaface/test_widerface.py configs/trainval/tinaface/tinaface_r50_fpn_gn_dcn.py /home/msai/jwang098/tinaface/workdir/tinaface_r50_fpn_gn_dcn/epoch_24_weights.pth

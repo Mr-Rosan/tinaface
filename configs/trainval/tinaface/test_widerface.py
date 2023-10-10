@@ -75,6 +75,10 @@ def test(engine, data_loader, outdir):
 
         with torch.no_grad():
             result = engine(data)[0]
+        
+        #print("----------------------")
+        #print(result)
+        #print("----------------------")
 
         if outdir is not None:
             write_txt(outdir, filename, result)
