@@ -36,6 +36,13 @@ def imnormalize_(img, mean, std, to_rgb=True):
     stdinv = 1 / np.float64(std.reshape(1, -1))
     if to_rgb:
         cv2.cvtColor(img, cv2.COLOR_BGR2RGB, img)  # inplace
+    #print(mean.shape)
+    #print("-----------------")
+    #sss = np.float64(std.reshape(1, -1))
+    #print(sss.shape)
+    #print("@@@@@@@@@@@@@@@@@")
+    #print(img.shape)
+    #print("#################")
     cv2.subtract(img, mean, img)  # inplace
     cv2.multiply(img, stdinv, img)  # inplace
     return img

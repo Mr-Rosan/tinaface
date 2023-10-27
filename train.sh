@@ -9,4 +9,4 @@
 #SBATCH --error=error_%x_%j.err
 
 module load cuda/11.8
-CUDA_VISIBLE_DEVICES="0" python tools/trainval.py configs/trainval/tinaface/tinaface_r50_fpn_bn.py
+CUDA_VISIBLE_DEVICES="0" python tools/trainval.py configs/trainval/tinaface/tinaface_dcn.py

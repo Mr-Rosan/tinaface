@@ -4,6 +4,12 @@ import torch.nn.functional as F
 import math
 from torchvision.models.vgg import vgg16
 
+from vedacore.misc import Config, load_weights, ProgressBar, mkdir_or_exist
+from vedacore.fileio import dump
+from vedadet.datasets import build_dataloader, build_dataset
+from vedadet.engines import build_engine
+from vedacore.parallel import MMDataParallel
+
 import numpy as np
 
 
@@ -102,6 +108,22 @@ class L_TV(nn.Module):
         h_tv = torch.pow((x[:,:,1:,:]-x[:,:,:h_x-1,:]),2).sum()
         w_tv = torch.pow((x[:,:,:,1:]-x[:,:,:,:w_x-1]),2).sum()
         return self.TVLoss_weight*2*(h_tv/count_h+w_tv/count_w)/batch_size
+
+class L_down(nn.Module):
+    def __init__(self):
+        super(L_down, self).__init__()
+
+    def forward(self, cfg, checkpoint, x):
+    # TODO:x
+        engine = build_engine(cfg.down_engine)
+        load_weights(engine.model, checkpoint, map_location='cpu')
+        device = torch.cuda.current_device()
+        engine = MMDataParallel(engine.to(device), device_ids=[torch.cuda.current_device()])
+        with torch.no_grad():
+            k = engine(x)[0]
+        return k
+        
+
 class Sa_Loss(nn.Module):
     def __init__(self):
         super(Sa_Loss, self).__init__()

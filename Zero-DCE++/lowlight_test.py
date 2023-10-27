@@ -23,14 +23,20 @@ def lowlight(image_path):
  
 
     data_lowlight = (np.asarray(data_lowlight)/255.0)
+    #print(data_lowlight)
+    #print("------------------------------")
 
     data_lowlight = torch.from_numpy(data_lowlight).float()
+    #print(data_lowlight)
+    #print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
     h=(data_lowlight.shape[0]//scale_factor)*scale_factor
     w=(data_lowlight.shape[1]//scale_factor)*scale_factor
     data_lowlight = data_lowlight[0:h,0:w,:]
     data_lowlight = data_lowlight.permute(2,0,1)
     data_lowlight = data_lowlight.cuda().unsqueeze(0)
+    #print(data_lowlight)
+    #print("################################")
 
     DCE_net = model.enhance_net_nopool(scale_factor).cuda()
     DCE_net.load_state_dict(torch.load('snapshots_Zero_DCE++/Epoch99.pth'))
