@@ -150,7 +150,7 @@ def train(config):
 
             # best_loss
             loss_up = Loss_TV + loss_spa + loss_col + loss_exp
-            loss =  loss_up + loss_down
+            loss =  2*loss_up + loss_down
             
             optimizer.zero_grad()
             
